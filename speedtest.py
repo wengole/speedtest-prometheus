@@ -1,7 +1,9 @@
 import json
 from subprocess import run
 
-from prometheus_client import start_http_server, REGISTRY
+from aiohttp import web
+from aiohttp_wsgi import WSGIHandler
+from prometheus_client import start_http_server, REGISTRY, make_wsgi_app
 from prometheus_client.metrics_core import GaugeMetricFamily
 
 
@@ -45,6 +47,8 @@ class SpeedtestCollector:
 
 if __name__ == "__main__":
     REGISTRY.register(SpeedtestCollector())
-    start_http_server(9516)
-    while True:
-        pass
+    wsgi_app = make_wsgi_app()
+    wsgi_handler = WSGIHandler(wsgi_app)
+    app = web.Application()
+    app.router.add_route("*", "/{path_info:.*}", wsgi_handler)
+    web.run_app(app, port=9516)

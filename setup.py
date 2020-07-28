@@ -9,5 +9,5 @@ setup(
     author="Ben Cole",
     author_email="",
     description="Prometheus exporter wrapping new Ookla speedtest CLI",
-    install_requires=["prometheus_client",],
+    install_requires=["prometheus_client", "aiohttp_wsgi"],
 )
