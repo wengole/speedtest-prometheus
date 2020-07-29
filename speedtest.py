@@ -41,7 +41,7 @@ class SpeedtestCollector:
             value=results["upload"]["bandwidth"],
         )
         yield GaugeMetricFamily(
-            "speedtest_packetloss", "Packet Loss (%)", value=results["packetLoss"]
+            "speedtest_packetloss", "Packet Loss (%)", value=results.get("packetLoss")
         )
 
 
