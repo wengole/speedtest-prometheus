@@ -20,7 +20,7 @@ class SpeedtestCollector:
         yield GaugeMetricFamily("speedtest_packetloss", "Packet Loss (%)")
 
     def collect(self):
-        _output = run(["speedtest", "-b", "-f", "json"], capture_output=True)
+        _output = run(["speedtest", "-s", "25305", "-b", "-f", "json"], capture_output=True)
         results = json.loads(_output.stdout)
         yield GaugeMetricFamily(
             "speedtest_ping_jitter", "Ping jitter (ms)", value=results["ping"]["jitter"]
