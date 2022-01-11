@@ -1,9 +1,10 @@
+import asyncio
 import json
 from subprocess import run
 
 from aiohttp import web
 from aiohttp_wsgi import WSGIHandler
-from prometheus_client import start_http_server, REGISTRY, make_wsgi_app
+from prometheus_client import REGISTRY, make_wsgi_app
 from prometheus_client.metrics_core import GaugeMetricFamily
 
 
@@ -46,9 +47,10 @@ class SpeedtestCollector:
 
 
 if __name__ == "__main__":
+    loop = asyncio.get_event_loop()
     REGISTRY.register(SpeedtestCollector())
     wsgi_app = make_wsgi_app()
-    wsgi_handler = WSGIHandler(wsgi_app)
+    wsgi_handler = WSGIHandler(wsgi_app, loop=loop)
     app = web.Application()
     app.router.add_route("*", "/{path_info:.*}", wsgi_handler)
-    web.run_app(app, port=9516)
+    web.run_app(app, port=9516, loop=loop)
