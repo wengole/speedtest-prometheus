@@ -53,4 +53,4 @@ if __name__ == "__main__":
     wsgi_handler = WSGIHandler(wsgi_app)
     app = web.Application()
     app.router.add_route("*", "/{path_info:.*}", wsgi_handler)
-    web.run_app(app, port=9516, loop=loop)
+    web.run_app(app, port=9516)
